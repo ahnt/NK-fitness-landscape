@@ -1,0 +1,205 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8423CCB11434F18700BBA2F0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8423CCB01434F18700BBA2F0 /* main.cpp */; };
+		8423CCB31434F18700BBA2F0 /* NKprob.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8423CCB21434F18700BBA2F0 /* NKprob.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8423CCAA1434F18700BBA2F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8423CCB31434F18700BBA2F0 /* NKprob.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8423CCAC1434F18700BBA2F0 /* NKprob */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NKprob; sourceTree = BUILT_PRODUCTS_DIR; };
+		8423CCB01434F18700BBA2F0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8423CCB21434F18700BBA2F0 /* NKprob.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = NKprob.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8423CCA91434F18700BBA2F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8423CCA11434F18600BBA2F0 = {
+			isa = PBXGroup;
+			children = (
+				8423CCAF1434F18700BBA2F0 /* NKprob */,
+				8423CCAD1434F18700BBA2F0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8423CCAD1434F18700BBA2F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8423CCAC1434F18700BBA2F0 /* NKprob */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8423CCAF1434F18700BBA2F0 /* NKprob */ = {
+			isa = PBXGroup;
+			children = (
+				8423CCB01434F18700BBA2F0 /* main.cpp */,
+				8423CCB21434F18700BBA2F0 /* NKprob.1 */,
+			);
+			path = NKprob;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8423CCAB1434F18700BBA2F0 /* NKprob */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8423CCB61434F18700BBA2F0 /* Build configuration list for PBXNativeTarget "NKprob" */;
+			buildPhases = (
+				8423CCA81434F18700BBA2F0 /* Sources */,
+				8423CCA91434F18700BBA2F0 /* Frameworks */,
+				8423CCAA1434F18700BBA2F0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NKprob;
+			productName = NKprob;
+			productReference = 8423CCAC1434F18700BBA2F0 /* NKprob */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8423CCA31434F18600BBA2F0 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 8423CCA61434F18600BBA2F0 /* Build configuration list for PBXProject "NKprob" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8423CCA11434F18600BBA2F0;
+			productRefGroup = 8423CCAD1434F18700BBA2F0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8423CCAB1434F18700BBA2F0 /* NKprob */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8423CCA81434F18700BBA2F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8423CCB11434F18700BBA2F0 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8423CCB41434F18700BBA2F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8423CCB51434F18700BBA2F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8423CCB71434F18700BBA2F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8423CCB81434F18700BBA2F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8423CCA61434F18600BBA2F0 /* Build configuration list for PBXProject "NKprob" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8423CCB41434F18700BBA2F0 /* Debug */,
+				8423CCB51434F18700BBA2F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8423CCB61434F18700BBA2F0 /* Build configuration list for PBXNativeTarget "NKprob" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8423CCB71434F18700BBA2F0 /* Debug */,
+				8423CCB81434F18700BBA2F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8423CCA31434F18600BBA2F0 /* Project object */;
+}
