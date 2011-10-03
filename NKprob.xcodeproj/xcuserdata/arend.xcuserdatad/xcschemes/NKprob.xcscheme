@@ -47,7 +47,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "16 6 1000 100000 0.05 0.01 LOD.txt fls.txt"
+            argument = "20 4 1024 10000 0.05 0.001 LOD.txt RAND"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

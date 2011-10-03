@@ -8,11 +8,13 @@
 using namespace std;
 
 #define randDouble ((double)rand()/(double)RAND_MAX)
-//#define discreteMode
+#define discreteMode
+#define ED 5
 
 vector<double> fitnessesForUIntGenotype;
 map<vector<double>,double> fitnessForGenotypes;
 map<vector<double>,int> genotypeCount;
+
 double **NKTable;
 unsigned int bitMask;
 int N,K,A;
@@ -21,10 +23,19 @@ double replacementRate;
 double mutationRate;
 unsigned int nrOfGenotypes;
 
+class tMutation{
+public:
+    int from,to,where;
+    void setup(int f, int w, int t){from=f; to=t; where=w;}
+};
 
 class tAgent{
 public:
+#ifdef discreteMode
+    vector<int> genome;
+#else
     vector<double> genome;
+#endif
     double fitness;
     int born;
     int nrPointingAtMe;
@@ -35,11 +46,16 @@ public:
     void setupDiscrete(unsigned int newGenotype);
     void setupProbabilistic(void);
     void saveLOD(FILE* lod);
+    void show(void);
+    void computeOwnFitness(void);
 };
+
+vector<tAgent*> lodBuffer;
 
 
 double genotypeToFitness(unsigned int genotype);
 void showNKTable(void);
+void doEpistasis(FILE *f);
 
 int main (int argc, char * const argv[]) {
     int i,j;
@@ -143,7 +159,9 @@ int main (int argc, char * const argv[]) {
 	}
     //save LOD
     FILE *lod=fopen(argv[7],"w+t");
-    population[1]->saveLOD(lod);
+    population[1]->saveLOD(NULL);
+    //do Epistasis
+    doEpistasis(lod);
     fclose(lod);
     return 0;
 }
@@ -180,6 +198,72 @@ void showNKTable(void){
     
 }
 
+void doEpistasis(FILE *f){
+    int i,j,n,k;
+    map<string,tMutation> mutationsMap;
+    vector<string> mutations;
+    set<string> setM;
+    set<int> setI;
+    i=0;
+    while(i<(lodBuffer.size()-1)){
+        k=0;
+        for(j=0;j<N;j++){
+            if(lodBuffer[i]->genome[j]!=lodBuffer[i+1]->genome[j])
+                k++;
+        }
+        if(k==0){
+            cout<<"--"<<endl;
+            lodBuffer.erase(lodBuffer.begin()+i);
+        }
+        else
+            i++;
+    }
+    for(i=0;i<lodBuffer.size()-ED;i++){
+        mutations.clear();
+        mutationsMap.clear();
+        setM.clear();
+        setI.clear();
+        for(j=0;j<ED;j++){
+            for(n=0;n<N;n++)
+                if(lodBuffer[i+j]->genome[n]!=lodBuffer[i+j+1]->genome[n]){
+                    string M;
+                    tMutation tM;
+                    char c[1000];
+                    sprintf(c,"%i-%i-%i",lodBuffer[i+j]->genome[n],n,lodBuffer[i+j+1]->genome[n]);
+                    tM.setup(lodBuffer[i+j]->genome[n],n,lodBuffer[i+j+1]->genome[n]);
+                    M.assign(c);
+                    mutations.push_back(M);
+                    setM.insert(M);
+                    setI.insert(n);
+                    mutationsMap[M]=tM;
+                }
+        }
+        fprintf(f,"%i   %f",lodBuffer[i]->born,lodBuffer[i]->fitness);
+        for(j=0;j<N;j++)
+            fprintf(f," %i",lodBuffer[i]->genome[j]);
+        if((setI.size()!=ED)||(setM.size()!=mutations.size())||(mutationsMap.size()!=ED)){
+            for(j=0;j<1<<ED;j++)
+                fprintf(f,"    0.0");
+            fprintf(f,"\n");
+        }
+        else{
+                
+            for(j=0;j<(1<<ED);j++){
+                tAgent *A=new tAgent;
+                A->genome=lodBuffer[i]->genome;
+                for(k=0;k<ED;k++)
+                    if((j&(1<<k))!=0){
+                        //apply mutation
+                        A->genome[mutationsMap[mutations[k]].where]=mutationsMap[mutations[k]].to;
+                    }
+                A->computeOwnFitness();
+                fprintf(f,"    %f",A->fitness);
+            }
+            fprintf(f,"\n");
+        }
+    }
+}
+
 
 // tAgent definitions
 void tAgent::inherit(tAgent *from){
@@ -190,7 +274,7 @@ void tAgent::inherit(tAgent *from){
     for(int i=0;i<from->genome.size();i++)
         if(randDouble<mutationRate){
 #ifdef discreteMode
-            genome[i]=(double)(rand()&1);
+            genome[i]=rand()&1;
 #else
             genome[i]=randDouble;
             doit=true;
@@ -201,7 +285,7 @@ void tAgent::inherit(tAgent *from){
 #ifdef discreteMode
     unsigned int G=0;
     for(int i=0;i<genome.size();i++)
-        if(genome[i]>0.5)
+        if(genome[i]==1)
             G|=(unsigned int)1<<(unsigned int)i;
     fitness=fitnessesForUIntGenotype[G];
 #else
@@ -246,9 +330,9 @@ void tAgent::setupDiscrete(unsigned int newGenotype){
     genome.resize(N);
     for(int i=0;i<N;i++){
         if(((newGenotype>>i)&1)==1)
-            genome[i]=1.0;
+            genome[i]=1;
         else
-            genome[i]=0.0;
+            genome[i]=0;
     }
     fitness=fitnessesForUIntGenotype[newGenotype];
 }
@@ -263,19 +347,59 @@ void tAgent::saveLOD(FILE* lod){
     if(ancestor!=NULL){
         ancestor->saveLOD(lod);
         if(ancestor->nrPointingAtMe!=1){
-            fclose(lod);
-            exit(0);
+            //fclose(lod);
+            //exit(0);
         }
     }
-    fprintf(lod,"%i %f  ",born,fitness);
-    for(int i=0;i<genome.size();i++){
+    lodBuffer.push_back(this);
+    if(lod!=NULL){
+        fprintf(lod,"%i %f  ",born,fitness);
+        for(int i=0;i<genome.size();i++){
 #ifdef discreteMode
-        fprintf(lod,"%i ",(int)genome[i]);
+            fprintf(lod,"%i ",(int)genome[i]);
 #else
-        fprintf(lod,"%f ",genome[i]);
+            fprintf(lod,"%f ",genome[i]);
+#endif
+        }
+        fprintf(lod,"\n");
+    }
+}
+
+void tAgent::show(void){
+    printf("%i   %f ",born,fitness);
+    for(int i=0;i<N;i++){
+#ifdef discreteMode
+        printf("%i",(int)genome[i]);
+#else
+    printf("    %f",genome[i]);
 #endif
     }
-    fprintf(lod,"\n");
+    printf("\n");
+}
+void tAgent::computeOwnFitness(void){
+#ifdef discreteMode
+    unsigned int G=0;
+    for(int i=0;i<genome.size();i++)
+        if(genome[i]==1)
+            G|=(unsigned int)1<<(unsigned int)i;
+    fitness=fitnessesForUIntGenotype[G];
+#else
+    if(true){
+        fitness=0.0;
+        for(unsigned int u=0;u<nrOfGenotypes;u++){
+            double p=1.0;
+            for(int i=0;i<N;i++)
+                if(((u>>i)&1)==1)
+                    p*=genome[i];
+                else
+                    p*=(1.0-genome[i]);
+            fitness+=fitnessesForUIntGenotype[u]*p;
+        }
+        fitnessForGenotypes[genome]=fitness;
+    }
+    else
+        fitness=from->fitness;
+#endif
 }
 
 /*
